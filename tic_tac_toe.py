@@ -1,9 +1,7 @@
-from random import choice
 import time
 
 current_player = "x"
 move_counter = 0
-computer = None
 board = [
     [" ", " ", " "],
     [" ", " ", " "],
@@ -31,16 +29,18 @@ def get_game_mode():
     print()
     game_mode = input(">")
     print()
-    time.sleep(0.5)
+    time.sleep(1)
 
     if game_mode == "1":
         print("Now starting Human-vs-Human game.")
-        time.sleep(0.5)
+        time.sleep(1)
         print()
     elif game_mode == "2":
-        print("Now starting Human-vs-Computer game.")
-        select_player_letter()
-        time.sleep(0.5)
+        print("Human-vs-Computer mode coming soon.")
+        time.sleep(1)
+        print()
+        print("Now starting Human-vs-Human game.")
+        time.sleep(1)
         print()
     else:
         print()
@@ -48,32 +48,10 @@ def get_game_mode():
         get_game_mode()
 
 
-def select_player_letter():
-    global computer
-
-    print()
-    print("To play as X, press 1.")
-    print("To play as O, press 2.")
-
-    selection = input(">")
-
-    if selection == "1":
-        computer = "o"
-    elif selection == "2":
-        computer = "x"
-    else:
-        print(">>>>>>>> Select a letter by pressing 1 or 2. <<<<<<<<")
-        select_player_letter()
-
-
 def game_loop():
     global current_player
 
-    if current_player == computer:
-        computer_moves()
-    else:
-        get_move_input(current_player)
-    
+    get_move_input(current_player)
     print_board()
 
     if evaluate_board(current_player):
@@ -94,15 +72,15 @@ def get_move_input(player):
     global move_counter
 
     square_names = {
-    "top left": board[0][0],
-    "top center": board[0][1],
-    "top right": board[0][2],
-    "middle left": board[1][0],
-    "middle center": board[1][1],
-    "middle right": board[1][2],
-    "bottom left": board[2][0],
-    "bottom center": board[2][1],
-    "bottom right": board[2][2],
+        "top left": board[0][0],
+        "top center": board[0][1],
+        "top right": board[0][2],
+        "middle left": board[1][0],
+        "middle center": board[1][1],
+        "middle right": board[1][2],
+        "bottom left": board[2][0],
+        "bottom center": board[2][1],
+        "bottom right": board[2][2],
     }
 
     print(f"{player}'s turn".upper())
@@ -132,37 +110,6 @@ def get_move_input(player):
         time.sleep(0.5)
         print()
         get_move_input(player)
-
-
-def computer_moves():
-    global move_counter
-
-    square_names = {
-        "top left": board[0][0],
-        "top center": board[0][1],
-        "top right": board[0][2],
-        "middle left": board[1][0],
-        "middle center": board[1][1],
-        "middle right": board[1][2],
-        "bottom left": board[2][0],
-        "bottom center": board[2][1],
-        "bottom right": board[2][2],
-    }
-
-    available_squares = [key for key in square_names.keys() if square_names[key] == ' ']
-    selected_square = choice(available_squares)
-
-    time.sleep(0.5)
-
-    print()
-    print("Computer's turn")
-    print()
-
-    time.sleep(0.5)
-
-    print(f"Computer plays {computer} in {selected_square}")
-    update_square(selected_square)
-    move_counter += 1
 
 
 def update_square(input_string):
