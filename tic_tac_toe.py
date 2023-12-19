@@ -1,12 +1,25 @@
 import time
+from random import choice
 
 current_player = "x"
 move_counter = 0
+computer = None
 board = [
     [" ", " ", " "],
     [" ", " ", " "],
     [" ", " ", " "]
 ]
+square_names = {
+    "top left": board[0][0],
+    "top center": board[0][1],
+    "top right": board[0][2],
+    "middle left": board[1][0],
+    "middle center": board[1][1],
+    "middle right": board[1][2],
+    "bottom left": board[2][0],
+    "bottom center": board[2][1],
+    "bottom right": board[2][2],
+}
 
 
 def main():
@@ -20,6 +33,8 @@ def main():
 
 
 def get_game_mode():
+    global computer
+
     time.sleep(0.5)
     print("Select Game Mode:")
     print()
@@ -36,12 +51,10 @@ def get_game_mode():
         time.sleep(1)
         print()
     elif game_mode == "2":
-        print("Human-vs-Computer mode coming soon.")
+        print("Now starting Human-vs-Computer game.")
         time.sleep(1)
         print()
-        print("Now starting Human-vs-Human game.")
-        time.sleep(1)
-        print()
+        computer = "x"
     else:
         print()
         print(">>>>>>>> Select a game mode by pressing 1 or 2. <<<<<<<<")
@@ -51,7 +64,13 @@ def get_game_mode():
 def game_loop():
     global current_player
 
-    get_move_input(current_player)
+    print("COMPUTER IS:", computer)
+
+    if current_player is computer:
+        computer_moves()
+    else:
+        get_move_input(current_player)
+
     print_board()
 
     if evaluate_board(current_player):
@@ -70,18 +89,6 @@ def game_loop():
 
 def get_move_input(player):
     global move_counter
-
-    square_names = {
-        "top left": board[0][0],
-        "top center": board[0][1],
-        "top right": board[0][2],
-        "middle left": board[1][0],
-        "middle center": board[1][1],
-        "middle right": board[1][2],
-        "bottom left": board[2][0],
-        "bottom center": board[2][1],
-        "bottom right": board[2][2],
-    }
 
     print(f"{player}'s turn".upper())
     print("--------")
@@ -112,6 +119,23 @@ def get_move_input(player):
         get_move_input(player)
 
 
+def computer_moves():
+    print("computer moves now")
+
+    global move_counter
+
+    available_moves = [name for name in square_names.keys() if square_names[name] == " "] 
+    print("AVAILABLE:", available_moves)
+    selected = choice(available_moves)
+
+    update_square(selected)
+
+    # generate list of available moves
+    # pick a random move from list
+    # call update_square() with chosen move
+    move_counter +=1
+
+
 def update_square(input_string):
     row = input_string.split()[0]
     column = input_string.split()[1]
@@ -126,6 +150,7 @@ def update_square(input_string):
     }
 
     board[translate[row]][translate[column]] = current_player
+    square_names[input_string] = current_player
 
 
 def print_board():
